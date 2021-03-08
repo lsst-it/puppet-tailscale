@@ -1,10 +1,11 @@
 {
   "name": "blockops-tailscale",
   "version": "0.1.0",
+  "issues_url": "https://gitlab.com/blockops/puppet-tailscale/issues",
   "author": "opselite@blockops.party",
-  "summary": "",
+  "summary": "A module for installing and configuring the tailscale mesh network",
   "license": "Apache-2.0",
-  "source": "",
+  "source": "https://gitlab.com/blockops/puppet-tailscale.git",
   "dependencies": [
     {
       "name": "puppetlabs-stdlib",
@@ -13,13 +14,33 @@
     {
       "name": "puppetlabs-apt",
       "version_requirement": ">= 5.5.0 < 9.0.0"
+    },
+    {
+      "name": "binford2k-node_encrypt",
+      "version_requirement": ">= 0.4.1 < 1.0.0"
     }
   ],
   "operatingsystem_support": [
     {
       "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [
-        "18.04", "16.04", "20.04"
+        "18.04",
+        "16.04",
+        "20.04"
+      ]
+    },
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [
+        "7",
+        "8"
+      ]
+    },
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [
+        "7",
+        "8"
       ]
     }
   ],
@@ -29,7 +50,7 @@
       "version_requirement": ">= 6.0.0 < 8.0.0"
     }
   ],
-  "pdk-version": "1.18.1",
-  "template-url": "pdk-default#1.18.1",
-  "template-ref": "tags/1.18.1-0-g3d2e75c"
+  "pdk-version": "2.0.0",
+  "template-url": "pdk-default#2.0.0",
+  "template-ref": "tags/2.0.0-0-ge838f1d"
 }

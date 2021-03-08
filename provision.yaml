@@ -4,4 +4,4 @@ default:
   images: ['litmusimage/ubuntu:20.04']
 docker:
   provisioner: docker
-  images: ['litmusimage/ubuntu:18.04', 'litmusimage/ubuntu:20.04']
+  images: ['litmusimage/ubuntu:18.04', 'litmusimage/ubuntu:20.04', 'litmusimage/centos:7', 'litmusimage/centos:8']

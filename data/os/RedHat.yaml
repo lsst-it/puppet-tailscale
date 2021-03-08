@@ -1,0 +1,2 @@
+---
+tailscale::base_pkg_url: https://pkgs.tailscale.com/stable/centos

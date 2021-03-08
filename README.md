@@ -1,117 +1,98 @@
 # tailscale
 
-Welcome to your new module. A short overview of the generated parts can be found
-in the [PDK documentation][1].
-
-The README template below provides a starting point with details about what
-information to include in your README.
-
+A module for installing and configuring the tailscale mesh network.  Not sure what tail is? A wireguard based VPN service.
+Join multiple networks into a single mesh network and even share with your friends. 
 ## Table of Contents
 
-1. [Description](#description)
-1. [Setup - The basics of getting started with tailscale](#setup)
-    * [What tailscale affects](#what-tailscale-affects)
-    * [Setup requirements](#setup-requirements)
-    * [Beginning with tailscale](#beginning-with-tailscale)
-1. [Usage - Configuration options and additional functionality](#usage)
-1. [Limitations - OS compatibility, etc.](#limitations)
-1. [Development - Guide for contributing to the module](#development)
+- [tailscale](#tailscale)
+  - [Table of Contents](#table-of-contents)
+  - [Description](#description)
+  - [Setup](#setup)
+    - [What tailscale affects](#what-tailscale-affects)
+    - [Setup Requirements](#setup-requirements)
+    - [Beginning with tailscale](#beginning-with-tailscale)
+  - [Usage](#usage)
+    - [Without hiera example](#without-hiera-example)
+    - [With hiera example](#with-hiera-example)
+  - [Reference](#reference)
+  - [Limitations](#limitations)
+  - [Development](#development)
 
 ## Description
 
-Briefly tell users why they might want to use your module. Explain what your
-module does and what kind of problems users can solve with it.
+A very basic module for setting up tailscale on debian and redhat systems. 
 
-This should be a fairly short description helps the user decide if your module
-is what they want.
+Requires a authkey for automated setup.  Essentially performs the installation 
+[instructions](https://tailscale.com/download/linux) provided on their website.
 
 ## Setup
 
-### What tailscale affects **OPTIONAL**
+### What tailscale affects 
 
-If it's obvious what your module touches, you can skip this section. For
-example, folks can probably figure out that your mysql_instance module affects
-their MySQL instances.
+* Installs tailscale package
+* Installs systemd tailscale service
+* Runs the tailscale up command with provided [authkey](https://tailscale.com/kb/1085/auth-keys?q=authkey)
 
-If there's more that they should know about, though, this is the place to
-mention:
+Joins your system to a mesh network.  Provide the wrong authkey and you might be joining to somebody else's network.
+### Setup Requirements 
 
-* Files, packages, services, or operations that the module will alter, impact,
-  or execute.
-* Dependencies that your module automatically installs.
-* Warnings or other important notices.
-
-### Setup Requirements **OPTIONAL**
-
-If your module requires anything extra before setting up (pluginsync enabled,
-another module, etc.), mention it here.
-
-If your most recent release breaks compatibility or requires particular steps
-for upgrading, you might want to include an additional "Upgrading" section here.
-
+You will need an [authkey](https://tailscale.com/kb/1085/auth-keys?q=authkey) and access to the internet.
 ### Beginning with tailscale
-
-The very basic steps needed for a user to get the module up and running. This
-can include setup steps, if necessary, or it can be an example of the most basic
-use of the module.
+In order to join the tailscale network you need the authkey.  This key should be treated as sensitive data as anybody with the key can gain access to your network.  We recommend using hiera-eyaml to encrypt the key.  To take extra precautions when using a puppetserver you should also set the tailscale::use_node_encrypt parameter to true.  
 
 ## Usage
 
-Include usage examples for common use cases in the **Usage** section. Show your
-users how to use your module to solve problems, and be sure to include code
-examples. Include three to five examples of the most important or common tasks a
-user can accomplish with your module. Show users how to accomplish more complex
-tasks that involve different types, classes, and functions working in tandem.
+### Without hiera example
 
+`class{'tailscale': auth_key => '123456' } `
+
+### With hiera example
+
+`include tailscale`
+
+```
+# data/common.yaml
+tailscale::auth_key: 123456
+tailscale::base_pgk_url: 'https://mydomain/packages/centos'
+
+# example only, options are not required
+tailscale::up_options:
+  hostname: "%{::facts.hostname}"
+```
 ## Reference
+These are the options availabe for providing tailscale up flags.
 
-This section is deprecated. Instead, add reference information to your code as
-Puppet Strings comments, and then use Strings to generate a REFERENCE.md in your
-module. For details on how to add code comments and generate documentation with
-Strings, see the [Puppet Strings documentation][2] and [style guide][3].
 
-If you aren't ready to use Strings yet, manually create a REFERENCE.md in the
-root of your module directory and list out each of your module's classes,
-defined types, facts, functions, Puppet tasks, task plans, and resource types
-and providers, along with the parameters for each.
+```shell
+USAGE
+  up [flags]
 
-For each element (class, defined type, function, and so on), list:
+"tailscale up" connects this machine to your Tailscale network,
+triggering authentication if necessary.
 
-* The data type, if applicable.
-* A description of what the element does.
-* Valid values, if the data type doesn't make it obvious.
-* Default value, if any.
+The flags passed to this command are specific to this machine. If you don't
+specify any flags, options are reset to their default.
 
-For example:
-
+FLAGS
+  -accept-dns true                           accept DNS configuration from the admin panel
+  -accept-routes false                       accept routes advertised by other Tailscale nodes
+  -advertise-routes ...                      routes to advertise to other nodes (comma-separated, e.g. 10.0.0.0/8,192.168.0.0/24)
+  -advertise-tags ...                        ACL tags to request (comma-separated, e.g. eng,montreal,ssh)
+  -authkey ...                               node authorization key
+  -force-reauth false                        force reauthentication
+  -host-routes true                          install host routes to other Tailscale nodes
+  -hostname ...                              hostname to use instead of the one provided by the OS
+  -login-server https://login.tailscale.com  base URL of control server
+  -netfilter-mode on                         netfilter mode (one of on, nodivert, off)
+  -shields-up false                          don't allow incoming connections
+  -snat-subnet-routes true                   source NAT traffic to local routes advertised with --advertise-routes
 ```
-### `pet::cat`
 
-#### Parameters
 
-##### `meow`
-
-Enables vocalization in your cat. Valid options: 'string'.
-
-Default: 'medium-loud'.
-```
 
 ## Limitations
 
-In the Limitations section, list any incompatibilities, known issues, or other
-warnings.
+At this time this module can only install and initialize tailscale.  
 
 ## Development
-
-In the Development section, tell other users the ground rules for contributing
-to your project and how they should submit their work.
-
-## Release Notes/Contributors/Etc. **Optional**
-
-If you aren't using changelog, put your release notes here (though you should
-consider using changelog). You can also add any additional sections you feel are
-necessary or important to include here. Please use the `##` header.
-
-[1]: https://puppet.com/docs/pdk/latest/pdk_generating_modules.html
-[2]: https://puppet.com/docs/puppet/latest/puppet_strings.html
-[3]: https://puppet.com/docs/puppet/latest/puppet_strings_style.html
+Pull requests welcomed.

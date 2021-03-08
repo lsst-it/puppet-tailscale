@@ -7,6 +7,9 @@ fixtures:
   forge_modules:
     stdlib: "puppetlabs/stdlib"
     apt: 'puppetlabs/apt'
+    node_encrypt: 'binford2k/node_encrypt'
+    yumrepo: puppetlabs/yumrepo_core
+    debug: nwops/debug
   repositories:
     provision: 'git://github.com/puppetlabs/provision.git'
     facts: 'https://github.com/puppetlabs/puppetlabs-facts.git'
