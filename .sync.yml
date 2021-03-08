@@ -1,0 +1,4 @@
+.travis.yml:
+  delete: true
+appveyor.yml:
+  delete: true
