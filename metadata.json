@@ -1,11 +1,12 @@
 {
   "name": "blockops-tailscale",
   "version": "0.1.0",
-  "issues_url": "https://gitlab.com/blockops/puppet-tailscale/issues",
   "author": "opselite@blockops.party",
   "summary": "A module for installing and configuring the tailscale mesh network",
   "license": "Apache-2.0",
   "source": "https://gitlab.com/blockops/puppet-tailscale.git",
+  "project_page": "https://gitlab.com/blockops/puppet-tailscale",
+  "issues_url": "https://gitlab.com/blockops/puppet-tailscale/issues",
   "dependencies": [
     {
       "name": "puppetlabs-stdlib",

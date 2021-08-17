@@ -1,10 +1,9 @@
-# tailscale
+# Tailscale
 
-A module for installing and configuring the tailscale mesh network.  Not sure what tail is? A wireguard based VPN service.
-Join multiple networks into a single mesh network and even share with your friends. 
+A module for installing and configuring the tailscale mesh network.  Not sure what tailscale is? A wireguard based VPN service. Join multiple networks into a single mesh network and even share with your friends. 
 ## Table of Contents
 
-- [tailscale](#tailscale)
+- [Tailscale](#tailscale)
   - [Table of Contents](#table-of-contents)
   - [Description](#description)
   - [Setup](#setup)
@@ -60,7 +59,7 @@ tailscale::up_options:
   hostname: "%{::facts.hostname}"
 ```
 ## Reference
-These are the options availabe for providing tailscale up flags.
+These are the options available for providing tailscale up flags.
 
 
 ```shell
@@ -70,22 +69,50 @@ USAGE
 "tailscale up" connects this machine to your Tailscale network,
 triggering authentication if necessary.
 
-The flags passed to this command are specific to this machine. If you don't
-specify any flags, options are reset to their default.
+With no flags, "tailscale up" brings the network online without
+changing any settings. (That is, it's the opposite of "tailscale
+down").
+
+If flags are specified, the flags must be the complete set of desired
+settings. An error is returned if any setting would be changed as a
+result of an unspecified flag's default value, unless the --reset
+flag is also used.
 
 FLAGS
-  -accept-dns true                           accept DNS configuration from the admin panel
-  -accept-routes false                       accept routes advertised by other Tailscale nodes
-  -advertise-routes ...                      routes to advertise to other nodes (comma-separated, e.g. 10.0.0.0/8,192.168.0.0/24)
-  -advertise-tags ...                        ACL tags to request (comma-separated, e.g. eng,montreal,ssh)
-  -authkey ...                               node authorization key
-  -force-reauth false                        force reauthentication
-  -host-routes true                          install host routes to other Tailscale nodes
-  -hostname ...                              hostname to use instead of the one provided by the OS
-  -login-server https://login.tailscale.com  base URL of control server
-  -netfilter-mode on                         netfilter mode (one of on, nodivert, off)
-  -shields-up false                          don't allow incoming connections
-  -snat-subnet-routes true                   source NAT traffic to local routes advertised with --advertise-routes
+  --accept-dns, --accept-dns=false
+    	accept DNS configuration from the admin panel (default true)
+  --accept-routes, --accept-routes=false
+    	accept routes advertised by other Tailscale nodes (default false)
+  --advertise-exit-node, --advertise-exit-node=false
+    	offer to be an exit node for internet traffic for the tailnet (default false)
+  --advertise-routes string
+    	routes to advertise to other nodes (comma-separated, e.g. "10.0.0.0/8,192.168.0.0/24")
+  --advertise-tags string
+    	comma-separated ACL tags to request; each must start with "tag:" (e.g. "tag:eng,tag:montreal,tag:ssh")
+  --authkey string
+    	node authorization key
+  --exit-node string
+    	Tailscale IP of the exit node for internet traffic
+  --exit-node-allow-lan-access, --exit-node-allow-lan-access=false
+    	Allow direct access to the local network when routing traffic via an exit node (default false)
+  --force-reauth, --force-reauth=false
+    	force reauthentication (default false)
+  --host-routes, --host-routes=false
+    	install host routes to other Tailscale nodes (default true)
+  --hostname string
+    	hostname to use instead of the one provided by the OS
+  --login-server string
+    	base URL of control server (default https://login.tailscale.com)
+  --netfilter-mode string
+    	netfilter mode (one of on, nodivert, off) (default on)
+  --operator string
+    	Unix username to allow to operate on tailscaled without sudo
+  --reset, --reset=false
+    	reset unspecified settings to their default values (default false)
+  --shields-up, --shields-up=false
+    	don't allow incoming connections (default false)
+  --snat-subnet-routes, --snat-subnet-routes=false
+    	source NAT traffic to local routes advertised with --advertise-routes (default true)
 ```
 
 
