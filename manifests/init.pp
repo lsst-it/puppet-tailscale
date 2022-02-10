@@ -68,10 +68,10 @@ class tailscale(
   }
   if $manage_service {
     service{'tailscaled':
-        ensure  => running,
-        enable  => true,
+        ensure   => running,
+        enable   => true,
         provider => $service_provider,
-        require => [Package['tailscale']]
+        require  => [Package['tailscale']]
       }
   }
 
