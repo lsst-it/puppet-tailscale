@@ -61,10 +61,16 @@ class tailscale(
         ensure  => present,
       }
   }
+  if ($::facts[os][distro][id] == 'Pop') {
+    $service_provider = 'systemd'
+  } else {
+    $service_provider = undef
+  }
   if $manage_service {
     service{'tailscaled':
         ensure  => running,
         enable  => true,
+        provider => $service_provider,
         require => [Package['tailscale']]
       }
   }
