@@ -16,7 +16,7 @@
 # @example
 #   include tailscale
 class tailscale(
-  Sensitive[String] $auth_key,
+  Variant[String, Sensitive[String]] $auth_key,
   Stdlib::HttpUrl $base_pkg_url,
   Boolean $manage_package = true,
   Boolean $manage_service = true,
@@ -61,7 +61,7 @@ class tailscale(
         ensure  => present,
       }
   }
-  if ($::facts[os][distro][id] == 'Pop') {
+  if ($::facts.dig('os', 'distro', 'id') == 'Pop') {
     $service_provider = 'systemd'
   } else {
     $service_provider = undef
