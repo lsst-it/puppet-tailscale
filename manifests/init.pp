@@ -18,9 +18,13 @@
 class tailscale(
   Sensitive[String] $auth_key,
   Stdlib::HttpUrl $base_pkg_url,
+  Boolean $manage_package = true,
+  Boolean $manage_service = true,
+  Boolean $manage_package_repository = true,
   Hash $up_options = {},
   Boolean $use_node_encrypt = false
 ) {
+  if $manage_package_repository {
   case $::facts[osfamily] {
     'Debian': {
       apt::source { 'tailscale':
@@ -51,13 +55,18 @@ class tailscale(
       fail('OS not support for tailscale')
     }
   }
-  package{'tailscale':
-    ensure  => present,
   }
-  service{'tailscaled':
-    ensure  => running,
-    enable  => true,
-    require => [Package['tailscale']]
+  if $manage_package {
+    package{'tailscale':
+        ensure  => present,
+      }
+  }
+  if $manage_service {
+    service{'tailscaled':
+        ensure  => running,
+        enable  => true,
+        require => [Package['tailscale']]
+      }
   }
 
   $up_cli_options =  $up_options.map |$key, $value| { "--${key}=${value}"}.join(' ')
