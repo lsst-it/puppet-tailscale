@@ -1,0 +1,17 @@
+{
+  "puppet_task_version": 1,
+  "supports_noop": false,
+  "description": "Installs tailscale",
+  "parameters": {
+    "authkey": {
+        "required": true,
+        "type": "String",
+        "description": "The auth key use to configure the agent"
+    },
+    "ostype": {
+        "required": false,
+        "type": "Enum[ubuntu_20_04]",
+        "description": "The os type if tailscale fails to detect the os"
+    }
+  }
+}
