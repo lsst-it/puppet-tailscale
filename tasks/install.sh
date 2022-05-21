@@ -1,4 +1,5 @@
 #!/usr/bin/env bash 
+# Example ostype ubuntu_20_04
 
 curl -fsSL https://tailscale.com/install.sh | sh
 
@@ -19,5 +20,6 @@ if [[ $? -ne 0 ]]; then
   esac
 fi
 
-tailscale up --authkey $PT_authkey
+sudo tailscale up --auth-key $PT_authkey
+sudo tailscale status
 

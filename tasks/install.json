@@ -10,7 +10,7 @@
     },
     "ostype": {
         "required": false,
-        "type": "Enum[ubuntu_20_04]",
+        "type": "String",
         "description": "The os type if tailscale fails to detect the os"
     }
   }
