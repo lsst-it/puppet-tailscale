@@ -58,8 +58,8 @@ class tailscale(
   }
   if $manage_package {
     package{'tailscale':
-        ensure  => present,
-      }
+      ensure  => present,
+    }
   }
   if ($::facts.dig('os', 'distro', 'id') == 'Pop') {
     $service_provider = 'systemd'
@@ -81,20 +81,17 @@ class tailscale(
     # uses node encrypt to unwrap the sensitive value then encrypts it
     # on the command line during execution the value is decrypted and never exposed to logs since the value
     # is temporary only exposed in a env variable
-    exec{'run tailscale up':
-      command     => "tailscale up --authkey=\$(puppet node decrypt --env SECRET) ${up_cli_options}",
-      provider    => shell,
-      environment => ["SECRET=${node_encrypt($auth_key)}"],
-      unless      => 'test $(tailscale status | wc -l) -gt 1',
-      require     => Service['tailscaled']
-    }
+    $ts_command = "tailscale up --authkey=\$(puppet node decrypt --env SECRET) ${up_cli_options}".rstrip
+    $env = ["SECRET=${node_encrypt($auth_key.unwrap)}"]
   } else {
-    exec{'run tailscale up':
-      command     => "tailscale up --authkey=\$SECRET ${up_cli_options}",
-      provider    => shell,
-      environment => ["SECRET=${auth_key.unwrap}"],
-      unless      => 'test $(tailscale status | wc -l) -gt 1',
-      require     => Service['tailscaled']
-    }
+    $ts_command = "tailscale up --authkey=\$SECRET ${up_cli_options}".rstrip
+    $env = ["SECRET=${auth_key.unwrap}"]
+  }
+  exec{'run tailscale up':
+    command     => $ts_command,
+    provider    => shell,
+    environment => $env,
+    unless      => 'test $(tailscale status | wc -l) -gt 1',
+    require     => Service['tailscaled'],
   }
 }
