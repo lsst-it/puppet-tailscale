@@ -75,7 +75,14 @@ class tailscale(
       }
   }
 
-  $up_cli_options =  $up_options.map |$key, $value| { "--${key}=${value}"}.join(' ')
+  $up_cli_options =  $up_options.map |$key, $value| {
+    $equalsVal = $value ? {
+      String[1] => "=${value}",
+      Boolean   => "=${bool2str($value)}",
+      default   => '',
+    }
+    "--${key}${equalsVal}"
+  }.join(' ')
 
   if $use_node_encrypt {
     # uses node encrypt to unwrap the sensitive value then encrypts it
