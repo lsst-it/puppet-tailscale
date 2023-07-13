@@ -10,12 +10,27 @@ describe 'tailscale' do
 
       it { is_expected.to compile }
       it {
-        is_expected.to contain_exec('run tailscale up').with({
-                                                               'command' => 'tailscale up --authkey=$SECRET',
-       'environment' => ['SECRET=123456'],
-       'provider' => 'shell'
-                                                             })
+        is_expected.to contain_exec('run tailscale up').with(
+          {
+            'command' => 'tailscale up --authkey=$SECRET',
+            'environment' => ['SECRET=123456'],
+            'provider' => 'shell'
+          },
+        )
       }
+      context 'boolean up option' do
+        let(:params) { { auth_key: sensitive('123456'), 'up_options' => { 'ssh' => '' } } }
+
+        it {
+          is_expected.to contain_exec('run tailscale up').with(
+            {
+              'command' => 'tailscale up --authkey=$SECRET --ssh',
+              'environment' => ['SECRET=123456'],
+              'provider' => 'shell'
+            },
+          )
+        }
+      end
     end
   end
 end
