@@ -9,46 +9,38 @@ default:
       - vendor/bundle
 
   before_script: &before_script
-    - bundle -v
+    - pdk --version
     - rm Gemfile.lock || true
-    - "# Update system gems if requested. This is useful to temporarily workaround troubles in the test runner"
-    - "# Set `rubygems_version` in the .sync.yml to set a value"
-    - "# Ignore exit code of SIGPIPE'd yes to not fail with shell's pipefail set"
-    - '[ -z "$RUBYGEMS_VERSION" ] || (yes || true) | gem update --system $RUBYGEMS_VERSION'
-    - gem --version
-    - bundle -v
-    - bundle config set --local path 'vendor/bundle'
-    - bundle config set --local without 'system_tests'
-    - bundle install --jobs $(nproc)
+  
 
 validate lint check rubocop-Ruby 2.7.7-Puppet ~> 7:
   stage: syntax
-  image: ruby:2.7.7
+  image: puppet/pdk:3.0.1.3
   script:
-    - bundle exec rake validate lint check rubocop
+    - validate --puppet-version 7
   variables:
     PUPPET_GEM_VERSION: '~> 7'
 
 parallel_spec-Ruby 2.7.7-Puppet ~> 7:
   stage: unit
-  image: ruby:2.7.7
+  image: puppet/pdk:3.0.1.3
   script:
-    - bundle exec rake parallel_spec
+    - test unit --puppet-version 7
   variables:
     PUPPET_GEM_VERSION: '~> 7'
 
 validate lint check rubocop-Ruby 3.2-Puppet ~> 8:
   stage: syntax
-  image: ruby:3.2.2
+  image: puppet/pdk:3.0.1.3
   script:
-    - bundle exec rake validate lint check rubocop
+    - validate --puppet-version 8
   variables:
     PUPPET_GEM_VERSION: '~> 8'
 
 parallel_spec-Ruby 3.2-Puppet ~> 8:
   stage: unit
-  image: ruby:3.2.2
+  image: puppet/pdk:3.0.1.3
   script:
-    - bundle exec rake parallel_spec
+    - test unit --puppet-version 8
   variables:
     PUPPET_GEM_VERSION: '~> 8'
