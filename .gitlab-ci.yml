@@ -12,35 +12,46 @@ default:
     - pdk --version
     - rm Gemfile.lock || true
   
-
 validate lint check rubocop-Ruby 2.7.7-Puppet ~> 7:
   stage: syntax
-  image: puppet/pdk:3.0.1.3
+  image: 
+    name: puppet/pdk:3.0.1.3
+    entrypoint:
+      - ""
   script:
-    - validate --puppet-version 7
+    - pdk validate --puppet-version 7
   variables:
     PUPPET_GEM_VERSION: '~> 7'
 
 parallel_spec-Ruby 2.7.7-Puppet ~> 7:
   stage: unit
-  image: puppet/pdk:3.0.1.3
+  image: 
+    name: puppet/pdk:3.0.1.3
+    entrypoint:
+      - ""
   script:
-    - test unit --puppet-version 7
+    - pdk test unit --puppet-version 7
   variables:
     PUPPET_GEM_VERSION: '~> 7'
 
 validate lint check rubocop-Ruby 3.2-Puppet ~> 8:
   stage: syntax
-  image: puppet/pdk:3.0.1.3
+  image: 
+    name: puppet/pdk:3.0.1.3
+    entrypoint:
+      - ""
   script:
-    - validate --puppet-version 8
+    - pdk validate --puppet-version 8
   variables:
     PUPPET_GEM_VERSION: '~> 8'
 
 parallel_spec-Ruby 3.2-Puppet ~> 8:
   stage: unit
-  image: puppet/pdk:3.0.1.3
+  image: 
+    name: puppet/pdk:3.0.1.3
+    entrypoint:
+      - ""
   script:
-    - test unit --puppet-version 8
+    - pdk test unit --puppet-version 8
   variables:
     PUPPET_GEM_VERSION: '~> 8'
