@@ -3,3 +3,7 @@
   delete: true
 appveyor.yml:
   delete: true
+.editorconfig:
+  unmanaged: false
+.gitlab-ci.yml:
+  unmanaged: true  

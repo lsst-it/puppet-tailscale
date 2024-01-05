@@ -1,6 +1,6 @@
 {
   "name": "blockops-tailscale",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "author": "opselite@blockops.party",
   "summary": "A module for installing and configuring the tailscale mesh network",
   "license": "Apache-2.0",
