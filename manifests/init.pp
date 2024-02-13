@@ -27,16 +27,24 @@ class tailscale (
   if $manage_package_repository {
     case $facts['os']['family'] {
       'Debian': {
+        file { '/usr/share/keyrings/tailscale.gpg':
+          source => 'puppet:///modules/tailscale/tailscale.gpg',
+          owner  => 'root',
+          group  => 'root',
+          mode   => '0644',
+        }
         apt::source { 'tailscale':
-          comment  => 'Tailscale packages for ubuntu',
+          comment  => 'Tailscale packages for Debian/Ubuntu',
           location => $base_pkg_url,
-          require  => Apt_key['tailscale'],
+          repos    => 'main',
+          release  => $::facts['os']['distro']['codename'],
+          keyring  => '/usr/share/keyrings/tailscale.gpg',
+          require  => File['/usr/share/keyrings/tailscale.gpg'],
           before   => Package['tailscale'],
         }
         apt_key { 'tailscale':
-          ensure => present,
+          ensure => absent,
           id     => '2596A99EAAB33821893C0A79458CA832957F5868',
-          source => "${base_pkg_url}/focal.gpg",
         }
       }
       'RedHat': {
