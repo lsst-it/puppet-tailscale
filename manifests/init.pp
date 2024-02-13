@@ -2,16 +2,25 @@
 #
 # Installs tailscale and adds to the network via tailscale up
 #
-# @param $auth_key 
+# @param auth_key
 #   the authorization key either onetime or multi-use
 #
-# @param $base_pkg_url
+# @param base_pkg_url
 #   the base url of where to get the package
 #
-# @param $up_options
+# @param manage_package_repository
+#   the options determines if the official tailscale repository should be managed or not
+#
+# @param manage_package
+#   the options determines if the installation of the package should be managed or not
+#
+# @param manage_service
+#   the options determines if the service should be managed (started and enabled) or not
+#
+# @param up_options
 #   the options to use when running tailscale up for the first time
 #
-# @param $use_node_encrypt
+# @param use_node_encrypt
 #   use node encrypt when running tailscale up.  This requires a puppetserver and node encrypt
 # @example
 #   include tailscale
