@@ -67,6 +67,11 @@ class tailscale (
     package { 'tailscale':
       ensure  => present,
     }
+    if ( $facts['os']['family'] == 'Debian' and $manage_package_repository == true) {
+      # make sure we update the package list before trying to install the package
+      # TODO: check if a similar workaround is also needed for RedHat
+      Exec['apt_update'] ~> Package['tailscale']
+    }
   }
   if ($::facts.dig('os', 'distro', 'id') == 'Pop') {
     $service_provider = 'systemd'
