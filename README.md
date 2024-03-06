@@ -123,3 +123,7 @@ At this time this module can only install and initialize tailscale.
 
 ## Development
 Pull requests welcomed.
+
+Click the button below to start a new development environment:
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://gitlab.com/blockops/puppet-tailscale)
